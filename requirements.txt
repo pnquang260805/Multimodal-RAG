@@ -1,0 +1,6 @@
+python-dotenv
+tqdm
+langchain
+langchain-text-splitters
+pillow
+pymupdf
