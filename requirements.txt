@@ -3,4 +3,8 @@ tqdm
 langchain
 langchain-text-splitters
 pillow
-pymupdf
+langchain-openai
+unstructured[all-docs]
+tqdm
+pytesseract
+huggingface_hub
