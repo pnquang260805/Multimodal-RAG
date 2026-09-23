@@ -8,3 +8,5 @@ unstructured[all-docs]
 tqdm
 pytesseract
 huggingface_hub
+langchain_huggingface 
+langchain-core
