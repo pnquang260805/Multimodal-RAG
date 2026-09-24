@@ -1,7 +1,6 @@
 from langchain_openai import ChatOpenAI
 from langchain_huggingface import HuggingFaceEmbeddings
 from configs.app_config import AppConfig
-from langchain_core.vectorstores import InMemoryVectorStore
 
 from services.chunking_service import ChunkingService
 
@@ -16,6 +15,9 @@ llm = ChatOpenAI(
 
 embeddings = HuggingFaceEmbeddings(
     model_name=conf.EMB_MODEL_ID,
-    model_kwargs={"device": "cuda"},
+    # model_kwargs={"device": "cuda"},
     encode_kwargs={"normalize_embeddings": True},
 )
+
+response = llm.invoke("xin chào")
+print(type(response))

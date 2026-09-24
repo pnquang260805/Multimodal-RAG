@@ -7,6 +7,7 @@ segments for downstream retrieval or LLM processing.
 
 from unstructured.partition.pdf import partition_pdf
 from typing import List, IO
+from unstructured.documents.elements import Element
 
 
 class ChunkingService:
@@ -16,7 +17,7 @@ class ChunkingService:
         strategy: str = "hi_res",
         chunking_strategy: str = "basic",
         languages: List[str] = ["eng"],
-    ):
+    ) -> List[Element]:
         """Split a PDF document into structured chunks.
 
         Args:

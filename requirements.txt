@@ -5,8 +5,9 @@ langchain-text-splitters
 pillow
 langchain-openai
 unstructured[all-docs]
-tqdm
 pytesseract
 huggingface_hub
 langchain_huggingface 
 langchain-core
+sentence-transformers
+pytest
