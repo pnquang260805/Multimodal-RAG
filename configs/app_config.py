@@ -14,3 +14,5 @@ class AppConfig:
         if not self.MODEL_URL.endswith("/v1"):
             self.MODEL_URL += "/v1"
         self.OPEN_AI_API = os.getenv("OPEN_AI_API", "not-needed")
+        self.DB_NAME = os.getenv("VECTOR_DB_NAME", "vector_db")
+        self.ATLAS_COLLECTION = os.getenv("ATLAS_COLLECTION", "atlas_collection")
