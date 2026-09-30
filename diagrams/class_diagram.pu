@@ -1,0 +1,24 @@
+@startuml
+interface VectorStore{
+    ' Document: đối tượng của langchain_core
+    + createVectorStore(): Void
+    + similaritySearch(queryVector : String, topK: int): List<Document>
+    ' List[String]: List các id của docs
+    + addDocuments(List<Document>): List<String>
+    ' List các ID của docs
+    + deleteDocuments(docs: ids: List<String>) : Boolean
+    + getRetriever(): VectorStoreRetriever
+    + createRetriever(searchType: String, topK: int): VectorStoreRetriever
+}
+
+class MongoVectorStore{
+    - connectionString: String
+    - dabaseName: String
+    - collectionName: String
+    - indexName: String
+    - embedding: Embeddings
+    + createCollection(): void
+}
+
+VectorStore <|- MongoVectorStore
+@enduml
