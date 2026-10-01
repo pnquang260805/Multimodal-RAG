@@ -20,5 +20,20 @@ class MongoVectorStore{
     + createCollection(): void
 }
 
-VectorStore <|- MongoVectorStore
+interface LanguageModel{
+    + createModel(): BaseChatModel
+    - buildSystemPrompt(): ChatPromptTemplate
+    + runChain(question: String, retriever: VectorStoreRetriever): String
+}
+
+class QwenVL{
+    - contextKeyString: String
+    - questionKeyString: String
+    - modelId: String
+    - apiKey: String
+    - modelConnectionUrl
+}
+
+VectorStore <|-- MongoVectorStore
+LanguageModel <|-- QwenVL
 @enduml

@@ -46,4 +46,4 @@ class MongoAtalasStoreService(VectorStore):
         )
 
     def get_retriever(self):
-        return self.get_retriever
+        return self.retriever

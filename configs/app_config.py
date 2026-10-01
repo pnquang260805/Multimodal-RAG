@@ -7,8 +7,8 @@ load_dotenv()
 class AppConfig:
     def __init__(self):
         self.HUNGGING_FACE_TOKEN = os.getenv("HUNGGING_FACE_TOKEN")
-        self.MONGODB_CONNECT_URL = os.getenv("MONGODB_CONNEC_URL")
-        self.LLM_MODEL_ID = os.getenv("LLM_MODEL_ID", "Qwen/Qwen2.5-VL-7B-Instruct-AWQ")
+        self.MONGODB_CONNECT_URL = os.getenv("MONGODB_CONNECT_URL")
+        self.LM_MODEL_ID = os.getenv("LM_MODEL_ID", "Qwen/Qwen2.5-VL-7B-Instruct-AWQ")
         self.EMB_MODEL_ID = os.getenv("EMB_MODEL_ID", "Qwen/Qwen3-Embedding-0.6B")
         self.MODEL_URL = os.getenv("MODEL_URL")
         if not self.MODEL_URL.endswith("/v1"):

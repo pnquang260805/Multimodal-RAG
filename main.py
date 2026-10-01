@@ -1,23 +1,29 @@
-from langchain_openai import ChatOpenAI
-from langchain_huggingface import HuggingFaceEmbeddings
+from services.qwen_service import QwenService
+from services.store_service import MongoAtalasStoreService
 from configs.app_config import AppConfig
-
-from services.chunking_service import ChunkingService
+from langchain_huggingface import HuggingFaceEmbeddings
 
 conf = AppConfig()
 
-llm = ChatOpenAI(
-    model=conf.LLM_MODEL_ID,
-    base_url=conf.MODEL_URL,
-    api_key=conf.OPEN_AI_API,
-    temperature=0.7,
-)
-
 embeddings = HuggingFaceEmbeddings(
     model_name=conf.EMB_MODEL_ID,
-    # model_kwargs={"device": "cuda"},
+    model_kwargs={
+        "device": "cuda",  # hoặc "cpu"
+        "processor_kwargs": {"padding_side": "left"},
+    },
     encode_kwargs={"normalize_embeddings": True},
 )
 
-response = llm.invoke("xin chào")
-print(type(response))
+print("====================Vector store======================")
+m = MongoAtalasStoreService(embeddings)
+m.create_collection()
+m.create_vector_store()
+m.create_retriever()
+retriever = m.get_retriever()
+print("======================================================\n\n\n")
+print("====================Model======================")
+q = QwenService()
+q.create_model()
+res = q.run_chain("Tìm cho tôi luật lao động ở nhật", retriever)
+print(res)
+print("======================================================\n\n\n")
