@@ -5,6 +5,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from services.extract_service import ExtractService
 conf = AppConfig()
 from pprint import pprint
+import base64
 
 # embeddings = HuggingFaceEmbeddings(
 #     model_name=conf.EMB_MODEL_ID,
@@ -31,12 +32,13 @@ print("======================================================\n\n\n")
 model = q.lm
 e = ExtractService(model)
 from pymupdf import pymupdf
-doc = e.open(r"E:\Mine\Code\LangchainProject\pdfs\mynumberriyou.pdf")
+doc = e.open(r"E:\Mine\Code\LangchainProject\pdfs\ごみ・プラスチック・資源の分け方・出し方.pdf")
 all_data = e.extract(doc)
 pprint(len(all_data))
-d = all_data[1]
+d = all_data[-1]
 xrefs = d['xrefs']
+print(f"XREFS: {len(xrefs)}")
 text = d['text']
-img = doc.extract_image(xrefs[0])['image']
+img = doc.extract_image(xrefs[12])['image']
 response = e.describe(img, text)
 pprint(f"Response: {response}")
