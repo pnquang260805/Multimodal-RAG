@@ -17,18 +17,13 @@ class VectorStore(ABC):
     def delete_documents(self, ids: List[str]) -> bool:
         pass
 
+
     @abstractmethod
-    def get_retriever(
-        self,
-    ) -> VectorStoreRetriever:
+    def _create_retriever(self, search_type: str = "similarity", top_k: int = 5) -> None:
         pass
 
     @abstractmethod
-    def create_retriever(self, search_type: str = "similarity", top_k: int = 5) -> None:
-        pass
-
-    @abstractmethod
-    def create_vector_store(
+    def _create_vector_store(
         self,
     ) -> None:
         pass

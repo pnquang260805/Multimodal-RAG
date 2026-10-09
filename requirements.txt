@@ -5,7 +5,6 @@ langchain-text-splitters
 pillow
 langchain-openai
 unstructured[all-docs]
-pytesseract
 huggingface_hub
 langchain-huggingface 
 langchain-core
@@ -13,3 +12,4 @@ sentence-transformers
 pytest
 langchain-mongodb
 pymongo
+langchain-community

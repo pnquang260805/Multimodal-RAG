@@ -16,7 +16,9 @@ class QwenService(LanguageModel):
         self._model_connection_url = conf.MODEL_URL
         self.prompt = None
 
-    def create_model(self):
+        self._create_model()
+
+    def _create_model(self):
         self.lm = ChatOpenAI(
             model=self._MODEL_ID,
             api_key=self._api_key,
@@ -35,7 +37,7 @@ class QwenService(LanguageModel):
                 1) Use ONLY the provided context to answer.
                 2) If the answer is not clearly contained in the context, say: "I don't know based on the provided documents."
                 3) Do NOT use outside knowledge, guessing, or web information.
-                4) If applicable, cite sources as (source:page) using the metadata.
+                4) If applicable, cite sources as (source:page, name:file's name) using the metadata.
 
                 Context:
                 {{{self._context_key}}}

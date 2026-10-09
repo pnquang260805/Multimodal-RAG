@@ -1,44 +1,35 @@
 from services.qwen_service import QwenService
 from services.store_service import MongoAtalasStoreService
-from configs.app_config import AppConfig
-from langchain_huggingface import HuggingFaceEmbeddings
 from services.extract_service import ExtractService
-conf = AppConfig()
-from pprint import pprint
-import base64
+from services.embed_serivce import EmbedService
 
-# embeddings = HuggingFaceEmbeddings(
-#     model_name=conf.EMB_MODEL_ID,
-#     model_kwargs={
-#         "device": "cuda",  # hoặc "cpu"
-#         "processor_kwargs": {"padding_side": "left"},
-#     },
-#     encode_kwargs={"normalize_embeddings": True},
-# )
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-# print("====================Vector store======================")
-# m = MongoAtalasStoreService(embeddings)
-# m.create_collection()
-# m.create_vector_store()
-# m.create_retriever()
-# retriever = m.get_retriever()
-# print("======================================================\n\n\n")
-print("====================Model======================")
-q = QwenService()
-q.create_model()
-# res = q.run_chain("Tìm cho tôi luật lao động ở nhật", retriever)
-# print(res)
-print("======================================================\n\n\n")
-model = q.lm
-e = ExtractService(model)
-from pymupdf import pymupdf
-doc = e.open(r"E:\Mine\Code\LangchainProject\pdfs\ごみ・プラスチック・資源の分け方・出し方.pdf")
-all_data = e.extract(doc)
-pprint(len(all_data))
-d = all_data[-1]
-xrefs = d['xrefs']
-print(f"XREFS: {len(xrefs)}")
-text = d['text']
-img = doc.extract_image(xrefs[12])['image']
-response = e.describe(img, text)
-pprint(f"Response: {response}")
+def asking_lm():
+    emb_service = EmbedService()
+    emb_model = emb_service.embeddings
+
+    vector_store = MongoAtalasStoreService(emb_model)
+    lm_service = QwenService()
+    extractor = ExtractService()
+    retriever = vector_store.retriever
+
+    print("Bắt đầu load thư mục...")
+    raw_docs = extractor.extract_dir("./pdfs")
+    print(f"Đã load xong {len(raw_docs)} trang tài liệu.")
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1000,
+        chunk_overlap=200
+    )
+    split_docs = text_splitter.split_documents(raw_docs)
+    print(f"Đã chia thành {len(split_docs)} đoạn chunks.")
+    print("-> Đang embed và nạp vào MongoDB...")
+    vector_store.add_documents(split_docs)
+    print("Hoàn tất nạp dữ liệu vào MongoDB Atlas!")
+
+    while True:
+        question = input(">>>> ").strip()
+        print(lm_service.run_chain(question, retriever))
+
+if __name__ == "__main__":
+    asking_lm()

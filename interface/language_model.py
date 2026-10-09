@@ -6,7 +6,7 @@ from langchain.chat_models import BaseChatModel
 
 class LanguageModel(ABC):
     @abstractmethod
-    def create_model(self) -> BaseChatModel:
+    def _create_model(self) -> BaseChatModel:
         pass
 
     @abstractmethod
