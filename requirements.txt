@@ -13,3 +13,6 @@ pytest
 langchain-mongodb
 pymongo
 langchain-community
+fastapi[standard]
+uvicorn
+python-multipart

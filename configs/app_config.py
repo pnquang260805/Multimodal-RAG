@@ -17,3 +17,4 @@ class AppConfig:
         self.DB_NAME = os.getenv("VECTOR_DB_NAME", "vector_db")
         self.ATLAS_COLLECTION = os.getenv("ATLAS_COLLECTION", "atlas_collection")
         self.MONGO_INDEX = os.getenv("MONGO_INDEX", "index")
+        self.UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")

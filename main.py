@@ -2,10 +2,16 @@ from services.qwen_service import QwenService
 from services.store_service import MongoAtalasStoreService
 from services.extract_service import ExtractService
 from services.embed_serivce import EmbedService
+from configs.app_config import AppConfig
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+from fastapi import FastAPI
+from controllers import file_controller
+
 def asking_lm():
+    conf = AppConfig()
+
     emb_service = EmbedService()
     emb_model = emb_service.embeddings
 
@@ -15,7 +21,7 @@ def asking_lm():
     retriever = vector_store.retriever
 
     print("Bắt đầu load thư mục...")
-    raw_docs = extractor.extract_dir("./pdfs")
+    raw_docs = extractor.extract_dir(conf.UPLOAD_FOLDER)
     print(f"Đã load xong {len(raw_docs)} trang tài liệu.")
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
@@ -31,5 +37,8 @@ def asking_lm():
         question = input(">>>> ").strip()
         print(lm_service.run_chain(question, retriever))
 
-if __name__ == "__main__":
-    asking_lm()
+app = FastAPI()
+app.include_router(file_controller.router)
+
+# if __name__ == "__main__":
+    # asking_lm()
